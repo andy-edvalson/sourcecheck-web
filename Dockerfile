@@ -12,13 +12,13 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy sourcecheck library first (changes less frequently)
-COPY ../sourcecheck-py /app/sourcecheck-py
+COPY sourcecheck-py /app/sourcecheck-py
 
 # Install sourcecheck library
 RUN pip install --no-cache-dir -e /app/sourcecheck-py
 
 # Copy API requirements
-COPY requirements.txt .
+COPY sourcecheck-web/requirements.txt .
 
 # Install API dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -48,8 +48,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /app/sourcecheck-py /app/sourcecheck-py
 
 # Copy API code
-COPY api /app/api
-COPY run.sh /app/
+COPY sourcecheck-web/api /app/api
 
 # Change ownership to non-root user
 RUN chown -R apiuser:apiuser /app

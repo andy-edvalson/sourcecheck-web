@@ -1,8 +1,8 @@
 # Python 3.11 required (negspacy compatibility)
 # Install with: pip install -r requirements.txt
 
-# SourceCheck library from GitHub
-git+https://github.com/andy-edvalson/sourcecheck-py.git@main
+# SourceCheck library from local directory (editable install)
+-e ../sourcecheck-py
 
 # FastAPI and server
 fastapi==0.104.1

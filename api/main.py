@@ -3,10 +3,22 @@ SourceCheck API - FastAPI Application
 
 A REST API for validating text claims against source documents.
 """
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from api.routes import health, validate
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+# Enable debug logging for sourcecheck modules
+logging.getLogger('sourcecheck').setLevel(logging.INFO)
 
 # Create FastAPI app
 app = FastAPI(
@@ -26,6 +38,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount static files
+app.mount("/static", StaticFiles(directory="api/static"), name="static")
+
 # Include routers
 app.include_router(health.router, tags=["Health"])
 app.include_router(validate.router, prefix="/api/v1", tags=["Validation"])
@@ -33,13 +48,8 @@ app.include_router(validate.router, prefix="/api/v1", tags=["Validation"])
 
 @app.get("/")
 async def root():
-    """Root endpoint - redirects to docs"""
-    return {
-        "message": "SourceCheck API",
-        "version": "0.1.0",
-        "docs": "/docs",
-        "health": "/health"
-    }
+    """Root endpoint - serves the web UI"""
+    return FileResponse("api/static/index.html")
 
 
 if __name__ == "__main__":

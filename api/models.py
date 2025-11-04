@@ -40,6 +40,12 @@ class QualityIssue(BaseModel):
     suggestion: Optional[str] = None
 
 
+class EvidenceSpan(BaseModel):
+    """Evidence span supporting/refuting a claim"""
+    text: str = Field(..., description="Evidence text snippet")
+    score: float = Field(..., description="Relevance score (0.0-1.0)")
+
+
 class ClaimDisposition(BaseModel):
     """Individual claim validation result"""
     field: str
@@ -51,6 +57,7 @@ class ClaimDisposition(BaseModel):
     score: Optional[float] = Field(None, description="Semantic/validator confidence score (0.0-1.0)")
     quality_score: Optional[float] = Field(None, description="Quality analysis score (0.0-1.0)")
     quality_issues: List[QualityIssue] = Field(default_factory=list)
+    evidence: List[EvidenceSpan] = Field(default_factory=list, description="Top evidence spans (up to 3)")
 
 
 class ValidationResponse(BaseModel):

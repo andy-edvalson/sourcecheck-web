@@ -40,6 +40,15 @@ echo "Installing dependencies..."
 echo "(This may take a few minutes on first run - installing ML models)"
 pip install -r requirements.txt
 
+# Check for SpaCy model and download if needed
+echo ""
+echo "Checking for SpaCy model..."
+python -c "import spacy; spacy.load('en_core_web_sm')" 2>/dev/null || {
+    echo "Downloading SpaCy model 'en_core_web_sm'..."
+    python -m spacy download en_core_web_sm
+    echo "✓ SpaCy model installed"
+}
+
 echo ""
 echo "========================================="
 echo "✓ Setup complete!"

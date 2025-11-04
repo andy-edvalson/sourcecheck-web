@@ -1,0 +1,16 @@
+version: "2.0"
+
+# Schema for validating raw text output (e.g., from LLM agents)
+# Input: {"body": "raw text string"}
+
+description: "Schema for validating free-form text output against source documents"
+
+fields:
+  body:
+    path: "body"
+    type: string
+    extraction_method: sentence_split
+    split_compound_claims: true   # Enable compound claim splitting (e.g., "30 employees and 3 launches" → 2 claims)
+    min_claim_length: 5           # Minimum words for a valid sub-claim
+    criticality: high
+    description: "Free-form text content to validate"

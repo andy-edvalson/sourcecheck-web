@@ -42,7 +42,8 @@ async def validate_claims(request: ValidationRequest):
         # Create checker with configs from request
         checker = Checker(
             schema=request.schema,
-            policies=request.policies
+            policies=request.policies,
+            debug=True  # Enable debug logging
         )
         
         # Run validation
@@ -70,6 +71,13 @@ async def validate_claims(request: ValidationRequest):
                         "suggestion": issue.suggestion
                     }
                     for issue in d.quality_issues
+                ],
+                evidence=[
+                    {
+                        "text": ev.text,
+                        "score": ev.score
+                    }
+                    for ev in (d.evidence[:3] if d.evidence else [])  # Top 3 evidence spans
                 ]
             )
             for d in report.dispositions
