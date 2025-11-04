@@ -1,0 +1,17 @@
+[Unit]
+Description=SourceCheck Web API
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/sourcecheck/sourcecheck-web
+Environment="PATH=/home/ubuntu/sourcecheck/sourcecheck-web/venv/bin"
+Environment="BASIC_AUTH_USERNAME=demo"
+Environment="BASIC_AUTH_PASSWORD=changeme"
+ExecStart=/home/ubuntu/sourcecheck/sourcecheck-web/venv/bin/uvicorn api.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
